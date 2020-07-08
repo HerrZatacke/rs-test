@@ -14,11 +14,4 @@ const save = (lineBuffer) => {
     .then(() => dataHash);
 };
 
-const del = (dataHash) => (
-  remoteStorage.gbPrinterWeb.deleteRawImage(dataHash)
-);
-
-export {
-  save,
-  del,
-};
+export default save;

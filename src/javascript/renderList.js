@@ -1,16 +1,31 @@
-import { del } from './tools/storage';
-
 const imageList = document.getElementById('images');
 const counter = document.getElementById('counter');
 
 const df = (timestamp) => {
   const d = new Date(timestamp);
-  return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds().toString(10).padStart(3, '0')}`;
+  return `${
+    d.getDate().toString(10).padStart(2, '0')
+  }-${
+    (d.getMonth() + 1).toString(10).padStart(2, '0')
+  }-${
+    d.getFullYear()
+  } ${
+    d.getHours().toString(10).padStart(2, '0')
+  }:${
+    d.getMinutes().toString(10).padStart(2, '0')
+  }:${
+    d.getSeconds().toString(10).padStart(2, '0')
+  }:${
+    d.getMilliseconds().toString(10).padStart(3, '0')
+  }`;
 };
 
-const renderList = (gbPrinterWeb) => {
+const renderList = (gbPrinterWeb, calledFrom) => {
   imageList.innerHTML = '';
   counter.innerHTML = '';
+
+  console.log('renderList', calledFrom);
+
   gbPrinterWeb.getImages()
     .then((images) => (
       Promise.all(
@@ -47,10 +62,10 @@ const renderList = (gbPrinterWeb) => {
           buttonDel.addEventListener('click', () => {
             gbPrinterWeb.deleteImage(image.hash)
               .then(() => (
-                del(image.hash)
+                gbPrinterWeb.deleteRawImage(image.hash)
               ))
               .then(() => {
-                renderList(gbPrinterWeb);
+                renderList(gbPrinterWeb, 'after del');
               });
           });
 

@@ -1,10 +1,10 @@
+import { debounce } from 'debounce';
 import '../scss/index.scss';
 import getRemoteStorage from './tools/remotestorage';
 import createRawImage from './tools/createRawImage';
-import { save } from './tools/storage';
+import save from './tools/storage';
 import createImage from './tools/createImage';
 import renderList from './renderList';
-
 
 document.addEventListener('DOMContentLoaded', () => {
   const rs = getRemoteStorage();
@@ -19,16 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttonFlush = document.getElementById('flush');
   let globalIndex = 1;
 
-  gbPrinterWeb.onImagesUpdated(() => {
-    renderList(gbPrinterWeb);
-  });
+  gbPrinterWeb.onImagesUpdated(debounce((event) => {
+    console.log(event);
+    renderList(gbPrinterWeb, 'after update event');
+  }, 200, false));
 
   gbPrinterWeb.getImages()
     .then((images) => {
       globalIndex = Math.max(globalIndex, ...images.map(({ index }) => index));
     });
 
-  renderList(gbPrinterWeb);
+  renderList(gbPrinterWeb, 'initial');
 
   const add = (amount) => (
     new Promise(((resolve) => {
@@ -81,22 +82,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   buttonAdd1.addEventListener('click', () => {
     add(1)
-      .then(() => renderList(gbPrinterWeb));
+      .then(() => renderList(gbPrinterWeb, 'after add 1'));
   });
 
   buttonAdd10.addEventListener('click', () => {
     add(10)
-      .then(() => renderList(gbPrinterWeb));
+      .then(() => renderList(gbPrinterWeb, 'after add 10'));
   });
 
   buttonAdd100.addEventListener('click', () => {
     add(100)
-      .then(() => renderList(gbPrinterWeb));
+      .then(() => renderList(gbPrinterWeb, 'after add 100'));
   });
 
   buttonFlush.addEventListener('click', () => {
-    rs.local.flush('/')
-      .then(() => renderList(gbPrinterWeb));
+    rs.local.flush('/');
   });
 
   buttonDelete.addEventListener('click', () => {
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gbPrinterWeb
           .deleteImages(hashes)
           .then(cleanupRawData)
-          .then(() => renderList(gbPrinterWeb));
+          .then(() => renderList(gbPrinterWeb, 'after cleanup'));
       });
   });
 });

@@ -32,8 +32,8 @@ const GbPrinterWeb = {
     return {
       exports: {
         onImagesUpdated: (callback) => {
-          client.on('change', () => {
-            callback();
+          client.on('change', (event) => {
+            callback(event);
           });
         },
 
