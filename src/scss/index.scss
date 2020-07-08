@@ -8,7 +8,38 @@ body {
   box-sizing: border-box;
 }
 
-pre {
-  font-family: monospace;
-  padding: 2px;
+#app {
+  margin-top: 60px;
+  padding: 20px;
+}
+
+.rs-widget {
+  position: fixed;
+  top: 0;
+}
+
+#images {
+  li {
+    font-size: 14px;
+    font-family: monospace;
+    margin-bottom: 2px;
+  }
+
+  button {
+    font-family: monospace;
+    font-size: 10px;
+    padding: 2px;
+    margin-left: 2px;
+    background: #f8c6c6;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: #f69999;
+    }
+  }
+}
+#counter {
+  font-size: 18px;
+  margin: 5px 0;
 }

@@ -36,6 +36,8 @@
     "postcss-loader": "^3.0.0",
     "postcss-pxtorem": "^5.1.1",
     "prop-types": "^15.7.2",
+    "remotestorage-widget": "^1.5.2",
+    "remotestoragejs": "^1.2.3",
     "reset-css": "^5.0.1",
     "rimraf": "^3.0.2",
     "sass-loader": "^8.0.2",
